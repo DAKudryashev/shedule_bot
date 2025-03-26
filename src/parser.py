@@ -9,11 +9,11 @@ from bs4 import BeautifulSoup
 
 
 class Parser:
-    def __init__(self, department, course, group):
-        self.department = department
-        self.course = course
-        self.group = group
-        self.text_by_days = []
+    def __init__(self):
+        self.department = ''
+        self.course = ''
+        self.group = ''
+        self.parsed_week = []
         self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
         self.driver.get("https://mai.ru/education/studies/schedule/index.php?group=М3О-312Б-22")
 
@@ -64,21 +64,33 @@ class Parser:
         # Парсинг страницы с открывшимся расписанием
         soup = BeautifulSoup(self.driver.page_source, 'html.parser')
         days = soup.find_all('div', class_='step-content')
+        week = []
         for day in days:
             day_date = day.find('span', class_='step-title')
+
             if day_date:
                 print(f"\nДата: {day_date.get_text(strip=True)}")
+            else:
+                continue
 
             disciplines = []
-            for div in day.find_all('div', class_='d-flex align-items-center justify-content-between'):
-                if div:
-                    disciplines.append(div.get_text(strip=True))
+            for div in day.find_all('div', class_='mb-4'):
+                discipline = div.find('div', class_='d-flex align-items-center justify-content-between')
+                subject = []
+                if discipline:
+                    subject.append(discipline.get_text(strip=True, separator=" "))
+                for li in div.find_all('li', class_='list-inline-item'):
+                    if li:
+                        subject.append(li.get_text(strip=True))
+                disciplines.append(subject)
             print(disciplines)
-
+            week.append([day_date.get_text(strip=True).replace('\xa0', ' '), disciplines])
+        # print(week)
+        return week
 
 
 if __name__ == '__main__':
-    parser_a = Parser('Институт №3', '3', 'М3О-312Б-22')
+    parser_a = Parser()
     parser_a.choose_department_and_course('Институт №3', '3')
     parser_a.choose_group('М3О-312Б-22')
     parser_a.get_week_schedule()
