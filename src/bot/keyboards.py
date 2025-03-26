@@ -29,7 +29,16 @@ course_kb = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text='5', callback_data='5'), InlineKeyboardButton(text='6', callback_data='6')]])
 
 
-def create_group_kb():
-    pass
+def create_group_kb(groups):
+    kb = []
+    for group in groups:
+        kb.append([InlineKeyboardButton(text=group, callback_data=group)])
+    return InlineKeyboardMarkup(inline_keyboard=kb)
 
-group_kb = create_group_kb()
+
+group_kb = create_group_kb(['М3В-337Бк-22', 'М3О-301Б-22', 'М3О-302Бки-22', 'М3О-304Б-22', 'М3О-305Б-22',
+                            'М3О-306Б-22', 'М3О-308Бки-22', 'М3О-309Б-22', 'М3О-310Б-22', 'М3О-311Б-22',
+                            'М3О-312Б-22', 'М3О-314Б-22', 'М3О-315Б-22', 'М3О-316Б-22', 'М3О-317Бк-22',
+                            'М3О-319Бк-22', 'М3О-321Б-22', 'М3О-322Бк-22', 'М3О-323Б-22', 'М3О-325Бк-22',
+                            'М3О-326Б-22', 'М3О-329Б-22', 'М3О-332Б-22', 'М3О-333Б-22', 'М3О-334Б-22',
+                            'М3О-335Б-22', 'М3О-336Б-22'])

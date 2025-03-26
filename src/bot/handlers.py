@@ -30,5 +30,5 @@ async def course_selected(callback: CallbackQuery):
 
 
 @router.callback_query(F.data.in_())
-async  def group_selected(callback: CallbackQuery):
+async def group_selected(callback: CallbackQuery):
     pass
